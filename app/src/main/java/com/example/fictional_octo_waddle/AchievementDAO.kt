@@ -23,7 +23,7 @@ class AchievementDAO(val context: Context) {
         values.put(Achievement.COLUMN_NAME_ICON, achievement.icon)
         values.put(Achievement.COLUMN_NAME_ICON_GRAY, achievement.icongray)
         values.put(Achievement.COLUMN_NAME_ACHIEVED, achievement.achieved)
-        values.put(Achievement.COLUMN_NAME_GAME, achievement.game.id)
+        values.put(Achievement.COLUMN_NAME_GAME, achievement.game)
         return values
     }
     fun cursor(cursor: Cursor): Achievement {
@@ -34,9 +34,8 @@ class AchievementDAO(val context: Context) {
         val icon = cursor.getString(cursor.getColumnIndexOrThrow(Achievement.COLUMN_NAME_ICON))
         val icongray = cursor.getString(cursor.getColumnIndexOrThrow(Achievement.COLUMN_NAME_ICON_GRAY))
         val achieved = cursor.getInt(cursor.getColumnIndexOrThrow(Achievement.COLUMN_NAME_ACHIEVED))
-        val gameid = cursor.getLong(cursor.getColumnIndexOrThrow(Achievement.COLUMN_NAME_GAME))
-        val game = dao.get(gameid)!!
-        return Achievement(name, hidden, description, icon, icongray, achieved, game, id)
+        val appid = cursor.getInt(cursor.getColumnIndexOrThrow(Achievement.COLUMN_NAME_GAME))
+        return Achievement(name, hidden, description, icon, icongray, achieved, appid, id)
     }
     fun insert(achievement: Achievement) {
         open()
@@ -57,7 +56,7 @@ class AchievementDAO(val context: Context) {
     }
     fun get(): List<Achievement> {
         open()
-        var achievements: MutableList<Achievement> = mutableListOf()
+        val achievements: MutableList<Achievement> = mutableListOf()
         val cursor = db.query(Achievement.TABLE_NAME, null, null, null, null, null, null)
         try {
             while (cursor.moveToNext()) {

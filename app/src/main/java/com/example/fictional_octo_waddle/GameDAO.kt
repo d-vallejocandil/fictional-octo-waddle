@@ -22,11 +22,10 @@ class GameDAO(val context: Context) {
         return values
     }
     fun cursor(cursor: Cursor): Game {
-        val id = cursor.getLong(cursor.getColumnIndexOrThrow(Game.COLUMN_NAME_ID))
         val appid = cursor.getInt(cursor.getColumnIndexOrThrow(Game.COLUMN_NAME_APPID))
         val name = cursor.getString(cursor.getColumnIndexOrThrow(Game.COLUMN_NAME_NAME))
         val img_icon_url = cursor.getString(cursor.getColumnIndexOrThrow(Game.COLUMN_NAME_IMG_ICON_URL))
-        return Game(appid, name, img_icon_url, id)
+        return Game(appid, name, img_icon_url)
     }
     fun insert(game: Game) {
         open()
@@ -45,10 +44,10 @@ class GameDAO(val context: Context) {
     fun update(game: Game) {
 
     }
-    fun get(id: Long): Game? {
+    fun get(id: Int): Game? {
         open()
         var game: Game? = null
-        val cursor = db.query(Game.TABLE_NAME, null, "${Game.COLUMN_NAME_ID} = $id", null, null, null, null)
+        val cursor = db.query(Game.TABLE_NAME, null, "${Game.COLUMN_NAME_APPID} = $id", null, null, null, null)
         try {
             while (cursor.moveToNext()) {
                 game = cursor(cursor)

@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        deleteDatabase("fictional_octo_waddle.db")
         gameDAO = GameDAO(this)
         val games = gameDAO.get()
         adapter = GameAdapter(games) {
@@ -60,7 +61,7 @@ class MainActivity : AppCompatActivity() {
                             }
                         }
                         val description = if (achievement1.hidden == 1) "Hidden description." else achievement1.description!!
-                        achievementDAO.insert(Achievement(achievement1.name!!, achievement1.hidden!!, description, achievement1.icon!!, achievement1.icongray!!, achieved, newGame))
+                        achievementDAO.insert(Achievement(achievement1.name!!, achievement1.hidden!!, description, achievement1.icon!!, achievement1.icongray!!, achieved, newGame.appid))
                     }
                 }
             }
