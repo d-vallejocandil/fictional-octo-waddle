@@ -34,8 +34,9 @@ class AchievementDAO(val context: Context) {
         val icon = cursor.getString(cursor.getColumnIndexOrThrow(Achievement.COLUMN_NAME_ICON))
         val icongray = cursor.getString(cursor.getColumnIndexOrThrow(Achievement.COLUMN_NAME_ICON_GRAY))
         val achieved = cursor.getInt(cursor.getColumnIndexOrThrow(Achievement.COLUMN_NAME_ACHIEVED))
-        val game = dao.get(id)!!
-        return Achievement(name, hidden, description, icon, icongray, achieved, game)
+        val gameid = cursor.getLong(cursor.getColumnIndexOrThrow(Achievement.COLUMN_NAME_GAME))
+        val game = dao.get(gameid)!!
+        return Achievement(name, hidden, description, icon, icongray, achieved, game, id)
     }
     fun insert(achievement: Achievement) {
         open()

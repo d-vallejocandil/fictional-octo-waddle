@@ -39,55 +39,28 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
         binding.recycler.adapter = adapter
-        gameDAO = GameDAO(this)
         achievementDAO = AchievementDAO(this)
         CoroutineScope(Dispatchers.IO).launch {
             val games = api.getGames(Keys.KEY, Keys.STEAM_ID).response.games
             for (game in games) {
-                var check1: AvailableGameStats? = null
-                check1 = api.getAchievements(
-                    Keys.KEY,
-                    game.appid
-                ).game.availableGameStats
-                var achievements: List<GameAchievement> = emptyList()
-                if(check1 != null) {
-                    achievements = check1.achievements
-                }
-                var check2: PlayerStats? = null
-                check2 = api.getUserAchievements(
-                    Keys.KEY,
-                    Keys.STEAM_ID,
-                    game.appid
-                ).stats
-                var userachievements: List<UserAchievement> = emptyList()
-                if(check2 != null) {
-                    userachievements = check2.achievements
-                }
-                CoroutineScope(Dispatchers.Main).launch {
-                    val newgame = Game(game.appid, game.name, game.img_icon_url)
-                    gameDAO.insert(newgame)
-                    if (achievements.size > 0) {
-                        for (achievement in achievements) {
-                            var achieved = 0
-                            /*if (userachievements.size > 0) {
-                                for (userachievement in userachievements) {
-                                    if (userachievement.name == achievement.name) {
-                                        achieved = 1
-                                    }
+                val newGame = Game(game.appid, game.name, game.img_icon_url)
+                gameDAO.insert(newGame)
+                var achievements1 = emptyList<GameAchievement>()
+                achievements1 = api.getAchievements(Keys.KEY, game.appid).game.availableGameStats?.achievements ?: emptyList()
+                var achievements2 = emptyList<UserAchievement>()
+                achievements2 = api.getUserAchievements(Keys.KEY, Keys.STEAM_ID, game.appid).playerstats?.achievements ?: emptyList()
+                if (achievements1.size > 0) {
+                    for (achievement1 in achievements1) {
+                        var achieved = 0
+                        if (achievements2.size > 0) {
+                            for (achievement2 in achievements2) {
+                                if (achievement1.name == achievement2.name) {
+                                    achieved = 1
                                 }
-                            }*/
-                            achievementDAO.insert(
-                                Achievement(
-                                    achievement.name,
-                                    achievement.hidden,
-                                    achievement.description,
-                                    achievement.icon,
-                                    achievement.icongray,
-                                    achieved,
-                                    newgame
-                                )
-                            )
+                            }
                         }
+                        val description = if (achievement1.hidden == 1) "Hidden description." else achievement1.description!!
+                        achievementDAO.insert(Achievement(achievement1.name!!, achievement1.hidden!!, description, achievement1.icon!!, achievement1.icongray!!, achieved, newGame))
                     }
                 }
             }

@@ -2,7 +2,7 @@ package com.example.fictional_octo_waddle
 
 data class Achievement(val name: String, val hidden: Int, val description: String, val icon: String, val icongray: String, val achieved: Int, val game: Game, val id: Long = -1) {
     companion object {
-        const val TABLE_NAME = "Game"
+        const val TABLE_NAME = "Achievement"
         const val COLUMN_NAME_ID = "id"
         const val COLUMN_NAME_NAME = "name"
         const val COLUMN_NAME_HIDDEN = "hidden"
@@ -19,6 +19,7 @@ data class Achievement(val name: String, val hidden: Int, val description: Strin
                 "$COLUMN_NAME_ICON TEXT," +
                 "$COLUMN_NAME_ICON_GRAY TEXT," +
                 "$COLUMN_NAME_ACHIEVED INTEGER," +
+                "$COLUMN_NAME_GAME INTEGER," +
                 "FOREIGN KEY($COLUMN_NAME_GAME) REFERENCES ${Game.TABLE_NAME}(${Game.COLUMN_NAME_ID}) ON DELETE CASCADE)"
         const val SQL_DROP = "DROP TABLE IF EXISTS $TABLE_NAME"
     }

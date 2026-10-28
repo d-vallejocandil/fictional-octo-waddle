@@ -30,17 +30,9 @@ class AchievementsActivity : AppCompatActivity() {
         adapter = AchievementAdapter(achievements)
         binding.recycler.adapter = adapter
         CoroutineScope(Dispatchers.IO).launch {
-            var check: AvailableGameStats? = null
-            check = api.getAchievements(
-                Keys.KEY,
-                game
-            ).game.availableGameStats
-            var achievements: List<GameAchievement> = emptyList()
-            if(check != null) {
-                achievements = check.achievements
-            }
+            val achievements = api.getAchievements(Keys.KEY, game).game.availableGameStats?.achievements
             CoroutineScope(Dispatchers.Main).launch {
-                if (achievements.size > 0) {
+                if (achievements != null) {
                     this@AchievementsActivity.achievements = achievements
                     update(achievements)
                 }
