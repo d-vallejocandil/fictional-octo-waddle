@@ -7,7 +7,7 @@ import com.example.fictional_octo_waddle.databinding.GameBinding
 import com.squareup.picasso.Picasso
 import java.util.concurrent.RecursiveTask
 
-class GameAdapter(var games: List<OwnedGame>, val listener: (Int) -> Unit): RecyclerView.Adapter<GameViewHolder>() {
+class GameAdapter(var games: List<Game>, val listener: (Int) -> Unit): RecyclerView.Adapter<GameViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameViewHolder {
         val binding = GameBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return GameViewHolder(binding)
@@ -22,13 +22,13 @@ class GameAdapter(var games: List<OwnedGame>, val listener: (Int) -> Unit): Recy
     override fun getItemCount(): Int {
         return games.size
     }
-    fun update(games: List<OwnedGame>) {
+    fun update(games: List<Game>) {
         this.games = games
         notifyDataSetChanged()
     }
 }
 class GameViewHolder(val binding: GameBinding): RecyclerView.ViewHolder(binding.root) {
-    fun render(game: OwnedGame) {
+    fun render(game: Game) {
         Picasso.get().load("https://media.steampowered.com/steamcommunity/public/images/apps/${game.appid}/${game.img_icon_url}.jpg").into(binding.image)
         binding.name.text = game.name
     }

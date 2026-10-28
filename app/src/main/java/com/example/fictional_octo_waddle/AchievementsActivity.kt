@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 class AchievementsActivity : AppCompatActivity() {
     lateinit var binding: ActivityAchievementsBinding
     lateinit var adapter: AchievementAdapter
-    var achievements: List<Achievement> = emptyList()
+    var achievements: List<GameAchievement> = emptyList()
     val api = Api.get()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,14 +30,24 @@ class AchievementsActivity : AppCompatActivity() {
         adapter = AchievementAdapter(achievements)
         binding.recycler.adapter = adapter
         CoroutineScope(Dispatchers.IO).launch {
-            val achievements = api.getAchievements(Keys.KEY, game).game.availableGameStats.achievements
+            var check: AvailableGameStats? = null
+            check = api.getAchievements(
+                Keys.KEY,
+                game
+            ).game.availableGameStats
+            var achievements: List<GameAchievement> = emptyList()
+            if(check != null) {
+                achievements = check.achievements
+            }
             CoroutineScope(Dispatchers.Main).launch {
-                this@AchievementsActivity.achievements = achievements
-                update(achievements)
+                if (achievements.size > 0) {
+                    this@AchievementsActivity.achievements = achievements
+                    update(achievements)
+                }
             }
         }
     }
-    fun update(achievements: List<Achievement>) {
+    fun update(achievements: List<GameAchievement>) {
         adapter.update(achievements)
     }
 }
