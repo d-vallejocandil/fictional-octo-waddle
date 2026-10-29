@@ -47,8 +47,6 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if(item.itemId == R.id.sync) {
             updategames()
-            val games = gameDAO.get()
-            update(games)
             return true
         }
         return super.onOptionsItemSelected(item)
@@ -67,6 +65,10 @@ class MainActivity : AppCompatActivity() {
             val games = api.getGames(Keys.KEY, Keys.STEAM_ID).response.games
             for (game in games) {
                 gameDAO.insert(Game(-1, game.appid, game.name, game.img_icon_url))
+            }
+            CoroutineScope(Dispatchers.Main).launch {
+                val games = gameDAO.get()
+                adapter.update(games)
             }
         }
     }

@@ -90,6 +90,10 @@ class AchievementsActivity : AppCompatActivity() {
                     achievementDAO.insert(Achievement(-1, achievement1.name!!, achievement1.hidden!!, description, achievement1.icon!!, achievement1.icongray!!, achieved, game))
                 }
             }
+            CoroutineScope(Dispatchers.Main).launch {
+                val achievements = achievementDAO.get(gameid)
+                adapter.update(achievements)
+            }
         }
     }
 }

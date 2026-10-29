@@ -36,10 +36,5 @@ class AchievementViewHolder(val binding: AchievementBinding): RecyclerView.ViewH
                 binding.description.text = achievement.description
             }
         }
-        if (achievement.achieved == 1) {
-            binding.description.setTextColor(Color.GREEN)
-        } else {
-            binding.description.setTextColor(Color.RED)
-        }
     }
 }
