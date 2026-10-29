@@ -23,19 +23,20 @@ class AchievementDAO(val context: Context) {
         values.put(Achievement.COLUMN_NAME_ICON, achievement.icon)
         values.put(Achievement.COLUMN_NAME_ICON_GRAY, achievement.icongray)
         values.put(Achievement.COLUMN_NAME_ACHIEVED, achievement.achieved)
-        values.put(Achievement.COLUMN_NAME_GAME, achievement.game)
+        values.put(Achievement.COLUMN_NAME_GAME, achievement.game.id)
         return values
     }
     fun cursor(cursor: Cursor): Achievement {
-        val id = cursor.getLong(cursor.getColumnIndexOrThrow(Achievement.COLUMN_NAME_ID))
+        val id = cursor.getInt(cursor.getColumnIndexOrThrow(Achievement.COLUMN_NAME_ID))
         val name = cursor.getString(cursor.getColumnIndexOrThrow(Achievement.COLUMN_NAME_NAME))
         val hidden = cursor.getInt(cursor.getColumnIndexOrThrow(Achievement.COLUMN_NAME_HIDDEN))
         val description = cursor.getString(cursor.getColumnIndexOrThrow(Achievement.COLUMN_NAME_DESCRIPTION))
         val icon = cursor.getString(cursor.getColumnIndexOrThrow(Achievement.COLUMN_NAME_ICON))
         val icongray = cursor.getString(cursor.getColumnIndexOrThrow(Achievement.COLUMN_NAME_ICON_GRAY))
         val achieved = cursor.getInt(cursor.getColumnIndexOrThrow(Achievement.COLUMN_NAME_ACHIEVED))
-        val appid = cursor.getInt(cursor.getColumnIndexOrThrow(Achievement.COLUMN_NAME_GAME))
-        return Achievement(name, hidden, description, icon, icongray, achieved, appid, id)
+        val gameid = cursor.getInt(cursor.getColumnIndexOrThrow(Achievement.COLUMN_NAME_GAME))
+        val game = dao.get(gameid)!!
+        return Achievement(id, name, hidden, description, icon, icongray, achieved, game)
     }
     fun insert(achievement: Achievement) {
         open()
@@ -51,13 +52,23 @@ class AchievementDAO(val context: Context) {
     fun delete(achievement: Achievement) {
 
     }
+    fun delete(id: Int) {
+        open()
+        try {
+            db.delete(Achievement.TABLE_NAME, "${Achievement.COLUMN_NAME_GAME} = $id", null)
+        } catch (e: Exception) {
+            Log.e("DB", e.toString())
+        } finally {
+            close()
+        }
+    }
     fun update(achievement: Achievement) {
 
     }
-    fun get(): List<Achievement> {
+    fun get(id: Int): List<Achievement> {
         open()
         val achievements: MutableList<Achievement> = mutableListOf()
-        val cursor = db.query(Achievement.TABLE_NAME, null, null, null, null, null, null)
+        val cursor = db.query(Achievement.TABLE_NAME, null, "${Achievement.COLUMN_NAME_GAME} = $id", null, null, null, null)
         try {
             while (cursor.moveToNext()) {
                 achievements.add(cursor(cursor))
