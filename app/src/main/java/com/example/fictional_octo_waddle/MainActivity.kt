@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         adapter = GameAdapter(games) {
             val game = games[it]
             val intent = Intent(this, AchievementsActivity::class.java)
-            intent.putExtra("GAME", game.game.id)
+            intent.putExtra("GAME", game.id)
             startActivity(intent)
         }
         binding.recycler.adapter = adapter
