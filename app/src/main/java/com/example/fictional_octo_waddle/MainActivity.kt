@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.view.inputmethod.CorrectionInfo
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -35,10 +36,13 @@ class MainActivity : AppCompatActivity() {
         adapter = GameAdapter(games) {
             val game = games[it]
             val intent = Intent(this, AchievementsActivity::class.java)
-            intent.putExtra("GAME", game.id)
+            intent.putExtra("GAME", game.game.id)
             startActivity(intent)
         }
         binding.recycler.adapter = adapter
+        if (games.isEmpty()) {
+            binding.header.visibility = View.VISIBLE
+        }
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)

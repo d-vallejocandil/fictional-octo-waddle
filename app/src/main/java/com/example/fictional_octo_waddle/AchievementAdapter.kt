@@ -36,5 +36,10 @@ class AchievementViewHolder(val binding: AchievementBinding): RecyclerView.ViewH
                 binding.description.text = achievement.description
             }
         }
+        if (achievement.achieved == 1) {
+            binding.achieved.isChecked = true
+        } else {
+            binding.achieved.isChecked = false
+        }
     }
 }

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -43,6 +44,11 @@ class AchievementsActivity : AppCompatActivity() {
         adapter = AchievementAdapter(achievements)
         binding.recycler.adapter = adapter
         update(achievements)
+        if (achievements.isEmpty()) {
+            binding.header.visibility = View.VISIBLE
+        } else {
+            binding.header.visibility = View.GONE
+        }
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
@@ -51,8 +57,6 @@ class AchievementsActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if(item.itemId == R.id.sync) {
             updateachievements()
-            val achievements = achievementDAO.get(gameid)
-            update(achievements)
             return true
         } else if(item.itemId == android.R.id.home) {
             finish()
@@ -93,6 +97,11 @@ class AchievementsActivity : AppCompatActivity() {
             CoroutineScope(Dispatchers.Main).launch {
                 val achievements = achievementDAO.get(gameid)
                 adapter.update(achievements)
+                if (achievements.isEmpty()) {
+                    binding.header.visibility = View.VISIBLE
+                } else {
+                    binding.header.visibility = View.GONE
+                }
             }
         }
     }
