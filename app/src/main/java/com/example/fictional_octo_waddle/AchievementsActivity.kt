@@ -50,7 +50,11 @@ class AchievementsActivity : AppCompatActivity() {
                 achieved = achieved + 1
             }
         }
-        binding.percent.text = "$achieved / ${achievements.size}"
+        if (achievements.isEmpty()) {
+            binding.percent.text = "Empty"
+        } else {
+            binding.percent.text = "$achieved / ${achievements.size}"
+        }
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
@@ -76,7 +80,11 @@ class AchievementsActivity : AppCompatActivity() {
                 achieved = achieved + 1
             }
         }
-        binding.percent.text = "$achieved / ${achievements.size}"
+        if (achievements.isEmpty()) {
+            binding.percent.text = "Empty"
+        } else {
+            binding.percent.text = "$achieved / ${achievements.size}"
+        }
     }
     fun update(achievements: List<Achievement>) {
         adapter.update(achievements)
@@ -112,7 +120,11 @@ class AchievementsActivity : AppCompatActivity() {
                         achieved = achieved + 1
                     }
                 }
-                binding.percent.text = "$achieved / ${achievements.size}"
+                if (achievements.isEmpty()) {
+                    binding.percent.text = "Empty"
+                } else {
+                    binding.percent.text = "$achieved / ${achievements.size}"
+                }
             }
         }
     }
