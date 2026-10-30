@@ -44,11 +44,13 @@ class AchievementsActivity : AppCompatActivity() {
         adapter = AchievementAdapter(achievements)
         binding.recycler.adapter = adapter
         update(achievements)
-        if (achievements.isEmpty()) {
-            binding.header.visibility = View.VISIBLE
-        } else {
-            binding.header.visibility = View.GONE
+        var achieved = 0
+        for (achievement in achievements) {
+            if (achievement.achieved == 1) {
+                achieved = achieved + 1
+            }
         }
+        binding.percent.text = "$achieved / ${achievements.size}"
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
@@ -68,6 +70,13 @@ class AchievementsActivity : AppCompatActivity() {
         super.onResume()
         val achievements = achievementDAO.get(gameid)
         update(achievements)
+        var achieved = 0
+        for (achievement in achievements) {
+            if (achievement.achieved == 1) {
+                achieved = achieved + 1
+            }
+        }
+        binding.percent.text = "$achieved / ${achievements.size}"
     }
     fun update(achievements: List<Achievement>) {
         adapter.update(achievements)
@@ -96,12 +105,14 @@ class AchievementsActivity : AppCompatActivity() {
             }
             CoroutineScope(Dispatchers.Main).launch {
                 val achievements = achievementDAO.get(gameid)
-                adapter.update(achievements)
-                if (achievements.isEmpty()) {
-                    binding.header.visibility = View.VISIBLE
-                } else {
-                    binding.header.visibility = View.GONE
+                update(achievements)
+                var achieved = 0
+                for (achievement in achievements) {
+                    if (achievement.achieved == 1) {
+                        achieved = achieved + 1
+                    }
                 }
+                binding.percent.text = "$achieved / ${achievements.size}"
             }
         }
     }
