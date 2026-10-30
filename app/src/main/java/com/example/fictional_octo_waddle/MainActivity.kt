@@ -41,7 +41,9 @@ class MainActivity : AppCompatActivity() {
         }
         binding.recycler.adapter = adapter
         if (games.isEmpty()) {
-            binding.header.visibility = View.VISIBLE
+            binding.percent.text = "Empty"
+        } else {
+            binding.percent.text = games.size.toString()
         }
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -59,6 +61,11 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         val games = gameDAO.get()
         update(games)
+        if (games.isEmpty()) {
+            binding.percent.text = "Empty"
+        } else {
+            binding.percent.text = games.size.toString()
+        }
     }
     fun update(games: List<Game>) {
         adapter.update(games)
@@ -73,6 +80,11 @@ class MainActivity : AppCompatActivity() {
             CoroutineScope(Dispatchers.Main).launch {
                 val games = gameDAO.get()
                 adapter.update(games)
+                if (games.isEmpty()) {
+                    binding.percent.text = "Empty"
+                } else {
+                    binding.percent.text = games.size.toString()
+                }
             }
         }
     }
