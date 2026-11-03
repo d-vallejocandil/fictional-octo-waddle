@@ -9,6 +9,7 @@ import android.view.View
 import android.view.inputmethod.CorrectionInfo
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.fictional_octo_waddle.databinding.ActivityMainBinding
@@ -21,6 +22,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var adapter: GameAdapter
     val api = Api.get()
     lateinit var gameDAO: GameDAO
+    var games: List<Game> = emptyList()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -31,8 +33,10 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        supportActionBar?.title = "Home"
+        supportActionBar?.subtitle = Keys.STEAM_ID
         gameDAO = GameDAO(this)
-        val games = gameDAO.get()
+        games = gameDAO.get()
         adapter = GameAdapter(games) {
             val game = games[it]
             val intent = Intent(this, AchievementsActivity::class.java)
@@ -48,6 +52,21 @@ class MainActivity : AppCompatActivity() {
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
+        val searchView = menu.findItem(R.id.search).actionView as SearchView
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText != null) {
+                    games = games.filter {
+                        it.name.contains(newText, true)
+                    }
+                    update(games)
+                }
+                return true
+            }
+        })
         return true
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -57,28 +76,18 @@ class MainActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
-    override fun onResume() {
-        super.onResume()
-        val games = gameDAO.get()
-        update(games)
-        if (games.isEmpty()) {
-            binding.percent.text = "Empty"
-        } else {
-            binding.percent.text = games.size.toString()
-        }
-    }
     fun update(games: List<Game>) {
         adapter.update(games)
     }
     fun updategames() {
         gameDAO.delete()
         CoroutineScope(Dispatchers.IO).launch {
-            val games = api.getGames(Keys.KEY, Keys.STEAM_ID).response.games
-            for (game in games) {
+            val ownedgames = api.getGames(Keys.KEY, Keys.STEAM_ID).response.games
+            for (game in ownedgames) {
                 gameDAO.insert(Game(-1, game.appid, game.name, game.img_icon_url))
             }
             CoroutineScope(Dispatchers.Main).launch {
-                val games = gameDAO.get()
+                games = gameDAO.get()
                 adapter.update(games)
                 if (games.isEmpty()) {
                     binding.percent.text = "Empty"

@@ -35,11 +35,14 @@ class AchievementsActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        gameid = intent.getIntExtra("GAME", -1)
+        gameDAO = GameDAO(this)
+        val game = gameDAO.get(gameid)!!
+        supportActionBar?.title = game.name
+        supportActionBar?.subtitle = gameid.toString()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.recycler.layoutManager = LinearLayoutManager(this)
         achievementDAO = AchievementDAO(this)
-        gameDAO = GameDAO(this)
-        gameid = intent.getIntExtra("GAME", -1)
         val achievements = achievementDAO.get(gameid)
         adapter = AchievementAdapter(achievements)
         binding.recycler.adapter = adapter
@@ -69,22 +72,6 @@ class AchievementsActivity : AppCompatActivity() {
             return true
         }
         return super.onOptionsItemSelected(item)
-    }
-    override fun onResume() {
-        super.onResume()
-        val achievements = achievementDAO.get(gameid)
-        update(achievements)
-        var achieved = 0
-        for (achievement in achievements) {
-            if (achievement.achieved == 1) {
-                achieved = achieved + 1
-            }
-        }
-        if (achievements.isEmpty()) {
-            binding.percent.text = "Empty"
-        } else {
-            binding.percent.text = "$achieved / ${achievements.size}"
-        }
     }
     fun update(achievements: List<Achievement>) {
         adapter.update(achievements)
