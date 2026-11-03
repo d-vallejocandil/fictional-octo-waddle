@@ -13,6 +13,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class LogInActivity : AppCompatActivity() {
     lateinit var binding: ActivityLogInBinding
+    lateinit var session: Session
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -44,7 +45,8 @@ class LogInActivity : AppCompatActivity() {
             if (steamid == "") {
                 binding.text.error = "Error"
             } else {
-                Keys.STEAM_ID = steamid
+                session = Session(this)
+                session.set(steamid)
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
             }

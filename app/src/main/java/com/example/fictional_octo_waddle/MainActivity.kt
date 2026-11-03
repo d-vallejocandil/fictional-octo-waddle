@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     val api = Api.get()
     lateinit var gameDAO: GameDAO
     var games: List<Game> = emptyList()
+    lateinit var session: Session
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -34,7 +35,8 @@ class MainActivity : AppCompatActivity() {
             insets
         }
         supportActionBar?.title = "Home"
-        supportActionBar?.subtitle = Keys.STEAM_ID
+        session = Session(this)
+        supportActionBar?.subtitle = session.get()
         gameDAO = GameDAO(this)
         games = gameDAO.get()
         adapter = GameAdapter(games) {
@@ -82,7 +84,7 @@ class MainActivity : AppCompatActivity() {
     fun updategames() {
         gameDAO.delete()
         CoroutineScope(Dispatchers.IO).launch {
-            val ownedgames = api.getGames(Keys.KEY, Keys.STEAM_ID).response.games
+            val ownedgames = api.getGames(Keys.KEY, session.get()).response.games
             for (game in ownedgames) {
                 gameDAO.insert(Game(-1, game.appid, game.name, game.img_icon_url))
             }

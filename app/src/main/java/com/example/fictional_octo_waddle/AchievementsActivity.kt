@@ -25,6 +25,7 @@ class AchievementsActivity : AppCompatActivity() {
     lateinit var achievementDAO: AchievementDAO
     lateinit var gameDAO: GameDAO
     var gameid: Int = -1
+    lateinit var session: Session
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -83,7 +84,8 @@ class AchievementsActivity : AppCompatActivity() {
             var achievements1 = emptyList<GameAchievement>()
             achievements1 = api.getAchievements(Keys.KEY, game.appid).game.availableGameStats?.achievements ?: emptyList()
             var achievements2 = emptyList<UserAchievement>()
-            achievements2 = api.getUserAchievements(Keys.KEY, Keys.STEAM_ID, game.appid).playerstats?.achievements ?: emptyList()
+            session = Session(this@AchievementsActivity)
+            achievements2 = api.getUserAchievements(Keys.KEY, session.get(), game.appid).playerstats?.achievements ?: emptyList()
             if (achievements1.size > 0) {
                 for (achievement1 in achievements1) {
                     var achieved = 0
