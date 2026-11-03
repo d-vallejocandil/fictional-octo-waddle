@@ -12,7 +12,7 @@
     <item
         android:id="@+id/sync"
         android:title="Sync"
-        android:icon="@drawable/sync_24px"
+        android:icon="@drawable/sync"
         app:showAsAction="always"/>
 
 </menu>
