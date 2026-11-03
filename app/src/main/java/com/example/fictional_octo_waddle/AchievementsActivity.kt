@@ -54,9 +54,9 @@ class AchievementsActivity : AppCompatActivity() {
             }
         }
         if (achievements.isEmpty()) {
-            binding.percent.text = "Empty"
+            binding.total.text = "STATS: Empty"
         } else {
-            binding.percent.text = "$achieved / ${achievements.size}"
+            binding.total.text = "STATS: $achieved / ${achievements.size}"
         }
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -108,9 +108,9 @@ class AchievementsActivity : AppCompatActivity() {
                     }
                 }
                 if (achievements.isEmpty()) {
-                    binding.percent.text = "Empty"
+                    binding.total.text = "STATS: Empty"
                 } else {
-                    binding.percent.text = "$achieved / ${achievements.size}"
+                    binding.total.text = "STATS: $achieved / ${achievements.size}"
                 }
             }
         }

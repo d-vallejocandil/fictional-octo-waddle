@@ -45,9 +45,9 @@ class MainActivity : AppCompatActivity() {
         }
         binding.recycler.adapter = adapter
         if (games.isEmpty()) {
-            binding.percent.text = "Empty"
+            binding.total.text = "TOTAL: Empty"
         } else {
-            binding.percent.text = games.size.toString()
+            binding.total.text = "TOTAL: ${games.size}"
         }
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -90,9 +90,9 @@ class MainActivity : AppCompatActivity() {
                 games = gameDAO.get()
                 adapter.update(games)
                 if (games.isEmpty()) {
-                    binding.percent.text = "Empty"
+                    binding.total.text = "TOTAL: Empty"
                 } else {
-                    binding.percent.text = games.size.toString()
+                    binding.total.text = "TOTAL: ${games.size}"
                 }
             }
         }
