@@ -63,7 +63,7 @@ class AchievementsActivity : AppCompatActivity() {
         }
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.main_menu, menu)
+        menuInflater.inflate(R.menu.achievement_menu, menu)
         return true
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
