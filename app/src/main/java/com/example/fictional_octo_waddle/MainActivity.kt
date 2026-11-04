@@ -78,6 +78,10 @@ class MainActivity : AppCompatActivity() {
             updategames()
             return true
         }
+        if (item.itemId == R.id.logout) {
+            val intent = Intent(this, LogInActivity::class.java)
+            startActivity(intent)
+        }
         return super.onOptionsItemSelected(item)
     }
     fun update(games: List<Game>) {
