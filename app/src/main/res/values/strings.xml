@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">fictional-octo-waddle</string>
+    <string name="hidden_description">Hidden description</string>
+    <string name="stats_empty">STATS: Empty</string>
+    <string name="log_in">Log In</string>
+    <string name="cancel">Cancel</string>
+    <string name="home">Home</string>
+    <string name="total_empty">TOTAL: Empty</string>
+    <string name="show_more">Show more...</string>
+    <string name="welcome">Welcome!</string>
 </resources>

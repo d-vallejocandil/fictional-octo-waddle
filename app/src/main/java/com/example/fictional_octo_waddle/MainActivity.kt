@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        supportActionBar?.title = "Home"
+        supportActionBar?.setTitle(R.string.home)
         session = Session(this)
         supportActionBar?.subtitle = session.get()
         gameDAO = GameDAO(this)
@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         }
         binding.recycler.adapter = adapter
         if (games.isEmpty()) {
-            binding.total.text = "TOTAL: Empty"
+            binding.total.setText(R.string.total_empty)
         } else {
             binding.total.text = "TOTAL: ${games.size}"
         }
@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity() {
                 games = gameDAO.get()
                 adapter.update(games)
                 if (games.isEmpty()) {
-                    binding.total.text = "TOTAL: Empty"
+                    binding.total.setText(R.string.total_empty)
                 } else {
                     binding.total.text = "TOTAL: ${games.size}"
                 }

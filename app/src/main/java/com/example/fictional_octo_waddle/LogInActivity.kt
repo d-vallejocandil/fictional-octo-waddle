@@ -32,10 +32,10 @@ class LogInActivity : AppCompatActivity() {
         val binding = LogInDialogBinding.inflate(layoutInflater)
         val builder = MaterialAlertDialogBuilder(this)
             .setView(binding.root)
-            .setPositiveButton("Log In") { dialog, which ->
+            .setPositiveButton(getString(R.string.log_in)) { dialog, which ->
 
             }
-            .setNegativeButton("Cancel") { dialog, which ->
+            .setNegativeButton(getString(R.string.cancel)) { dialog, which ->
 
             }
         val dialog = builder.create()

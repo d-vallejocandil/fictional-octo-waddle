@@ -55,7 +55,7 @@ class AchievementsActivity : AppCompatActivity() {
             }
         }
         if (achievements.isEmpty()) {
-            binding.total.text = "STATS: Empty"
+            binding.total.setText(R.string.stats_empty)
         } else {
             binding.total.text = "STATS: $achieved / ${achievements.size}"
         }
@@ -96,7 +96,7 @@ class AchievementsActivity : AppCompatActivity() {
                             }
                         }
                     }
-                    val description = if (achievement1.hidden == 1) "Hidden description." else achievement1.description!!
+                    val description = if (achievement1.hidden == 1) getString(R.string.hidden_description) else achievement1.description!!
                     achievementDAO.insert(Achievement(-1, achievement1.name!!, achievement1.hidden!!, description, achievement1.icon!!, achievement1.icongray!!, achieved, game))
                 }
             }
@@ -110,7 +110,7 @@ class AchievementsActivity : AppCompatActivity() {
                     }
                 }
                 if (achievements.isEmpty()) {
-                    binding.total.text = "STATS: Empty"
+                    binding.total.setText(R.string.stats_empty)
                 } else {
                     binding.total.text = "STATS: $achieved / ${achievements.size}"
                 }
