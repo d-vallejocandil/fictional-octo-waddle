@@ -36,7 +36,6 @@ class MainActivity : AppCompatActivity() {
         }
         supportActionBar?.setTitle(R.string.home)
         session = Session(this)
-        supportActionBar?.subtitle = session.get()
         gameDAO = GameDAO(this)
         games = gameDAO.get()
         adapter = GameAdapter(games) {
@@ -50,6 +49,9 @@ class MainActivity : AppCompatActivity() {
             binding.total.setText(R.string.total_empty)
         } else {
             binding.total.text = "TOTAL: ${games.size}"
+        }
+        binding.up.setOnClickListener {
+            binding.recycler.smoothScrollToPosition(0)
         }
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

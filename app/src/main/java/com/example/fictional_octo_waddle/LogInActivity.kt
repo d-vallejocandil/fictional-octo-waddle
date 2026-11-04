@@ -24,6 +24,7 @@ class LogInActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        supportActionBar?.setTitle(R.string.log_in)
         binding.login.setOnClickListener {
             logindialog()
         }

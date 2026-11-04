@@ -47,7 +47,6 @@ class AchievementsActivity : AppCompatActivity() {
         val achievements = achievementDAO.get(gameid)
         adapter = AchievementAdapter(achievements)
         binding.recycler.adapter = adapter
-        update(achievements)
         var achieved = 0
         for (achievement in achievements) {
             if (achievement.achieved == 1) {
@@ -58,6 +57,9 @@ class AchievementsActivity : AppCompatActivity() {
             binding.total.setText(R.string.stats_empty)
         } else {
             binding.total.text = "STATS: $achieved / ${achievements.size}"
+        }
+        binding.up.setOnClickListener {
+            binding.recycler.smoothScrollToPosition(0)
         }
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
