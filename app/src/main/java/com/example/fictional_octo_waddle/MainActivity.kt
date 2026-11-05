@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     val api = Api.get()
     lateinit var gameDAO: GameDAO
     var originalgames: List<Game> = emptyList()
+    var games: List<Game> = emptyList()
     lateinit var session: Session
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         gameDAO = GameDAO(this)
         originalgames = gameDAO.get()
         adapter = GameAdapter(originalgames) {
-            val game = originalgames[it]
+            val game = games[it]
             val intent = Intent(this, AchievementsActivity::class.java)
             intent.putExtra("GAME", game.id)
             startActivity(intent)
@@ -62,7 +63,7 @@ class MainActivity : AppCompatActivity() {
                 return false
             }
             override fun onQueryTextChange(newText: String?): Boolean {
-                val games = if (newText != null) {
+                games = if (newText != null) {
                     originalgames.filter { it.name.contains(newText, true) }
                 } else {
                     originalgames
