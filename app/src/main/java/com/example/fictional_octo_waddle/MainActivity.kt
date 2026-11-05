@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var adapter: GameAdapter
     val api = Api.get()
     lateinit var gameDAO: GameDAO
-    var games: List<Game> = emptyList()
+    var originalgames: List<Game> = emptyList()
     lateinit var session: Session
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,18 +37,18 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.setTitle(R.string.home)
         session = Session(this)
         gameDAO = GameDAO(this)
-        games = gameDAO.get()
-        adapter = GameAdapter(games) {
-            val game = games[it]
+        originalgames = gameDAO.get()
+        adapter = GameAdapter(originalgames) {
+            val game = originalgames[it]
             val intent = Intent(this, AchievementsActivity::class.java)
             intent.putExtra("GAME", game.id)
             startActivity(intent)
         }
         binding.recycler.adapter = adapter
-        if (games.isEmpty()) {
+        if (originalgames.isEmpty()) {
             binding.total.setText(R.string.total_empty)
         } else {
-            binding.total.text = "TOTAL: ${games.size}"
+            binding.total.text = "TOTAL: ${originalgames.size}"
         }
         binding.up.setOnClickListener {
             binding.recycler.smoothScrollToPosition(0)
@@ -62,12 +62,12 @@ class MainActivity : AppCompatActivity() {
                 return false
             }
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (newText != null) {
-                    games = games.filter {
-                        it.name.contains(newText, true)
-                    }
-                    update(games)
+                val games = if (newText != null) {
+                    originalgames.filter { it.name.contains(newText, true) }
+                } else {
+                    originalgames
                 }
+                update(games)
                 return true
             }
         })
@@ -95,12 +95,12 @@ class MainActivity : AppCompatActivity() {
                 gameDAO.insert(Game(-1, game.appid, game.name, game.img_icon_url))
             }
             CoroutineScope(Dispatchers.Main).launch {
-                games = gameDAO.get()
-                adapter.update(games)
-                if (games.isEmpty()) {
+                originalgames = gameDAO.get()
+                adapter.update(originalgames)
+                if (originalgames.isEmpty()) {
                     binding.total.setText(R.string.total_empty)
                 } else {
-                    binding.total.text = "TOTAL: ${games.size}"
+                    binding.total.text = "TOTAL: ${originalgames.size}"
                 }
             }
         }
