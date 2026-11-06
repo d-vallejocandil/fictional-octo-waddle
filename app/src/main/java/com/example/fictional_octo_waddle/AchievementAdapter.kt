@@ -30,6 +30,8 @@ class AchievementViewHolder(val binding: AchievementBinding): RecyclerView.ViewH
         if (achievement.hidden == 1) {
             Picasso.get().load(achievement.icongray).into(binding.image)
             binding.description.setText(R.string.hidden_description)
+            binding.description.setOnClickListener {
+            }
         } else {
             Picasso.get().load(achievement.icon).into(binding.image)
             binding.description.setText(R.string.show_more)

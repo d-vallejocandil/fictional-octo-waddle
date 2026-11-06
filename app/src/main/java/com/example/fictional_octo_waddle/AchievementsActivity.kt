@@ -40,7 +40,7 @@ class AchievementsActivity : AppCompatActivity() {
         gameDAO = GameDAO(this)
         val game = gameDAO.get(gameid)!!
         supportActionBar?.title = game.name
-        supportActionBar?.subtitle = gameid.toString()
+        supportActionBar?.subtitle = game.appid.toString()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.recycler.layoutManager = LinearLayoutManager(this)
         achievementDAO = AchievementDAO(this)

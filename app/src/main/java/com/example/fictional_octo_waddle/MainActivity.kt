@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         session = Session(this)
         gameDAO = GameDAO(this)
         originalgames = gameDAO.get()
+        games = gameDAO.get()
         adapter = GameAdapter(originalgames) {
             val game = games[it]
             val intent = Intent(this, AchievementsActivity::class.java)
